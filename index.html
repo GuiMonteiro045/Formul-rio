@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz: Testes em Python</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; max-width: 800px; margin: auto; }
+    h1 { text-align: center; color: #333366; }
+    .quiz-container { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    .question { font-weight: bold; margin-bottom: 10px; }
+    .options { margin-bottom: 10px; }
+    .feedback { margin-top: 10px; font-weight: bold; }
+    .correct { color: green; }
+    .incorrect { color: red; }
+    button { padding: 10px 15px; background: #333366; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #555599; }
+  </style>
+</head>
+<body>
+
+  <h1>Quiz: Testes em Python</h1>
+
+  <div id="quiz"></div>
+
+  <script>
+    const perguntas = [
+      {
+        enunciado: "1. Para que serve o comando `assert` em Python?",
+        opcoes: ["A) Criar variáveis", "B) Garantir que uma condição seja verdadeira", "C) Declarar funções", "D) Exibir mensagens no console"],
+        correta: 1
+      },
+      {
+        enunciado: "2. Qual é a saída do código abaixo?\n\ndef soma(a, b):\n    return a + b\n\nassert soma(2, 3) == 5\nprint('Teste passou!')",
+        opcoes: ["A) Erro", "B) 5", "C) Teste passou!", "D) Nenhuma saída"],
+        correta: 2
+      },
+      {
+        enunciado: "3. O que acontece se o `assert` falhar?",
+        opcoes: ["A) A execução continua normalmente", "B) O programa trava com uma exceção AssertionError", "C) Um teste é marcado como 'ok'", "D) A variável vira None"],
+        correta: 1
+      },
+      {
+        enunciado: "4. Complete: A biblioteca usada para testes mais estruturados em Python é chamada de _______.",
+        opcoes: ["A) testing", "B) pytest", "C) unittest", "D) assertpy"],
+        correta: 2
+      },
+      {
+        enunciado: "5. Qual dos métodos abaixo é usado dentro de uma classe de teste do `unittest` para verificar igualdade?",
+        opcoes: ["A) test.assert()", "B) assertEqual()", "C) checkEqual()", "D) validate()"],
+        correta: 1
+      },
+      {
+        enunciado: "6. Analise o código:\n\nclass Calculadora:\n    def dividir(self, a, b):\n        return a / b\n\nQual erro pode acontecer se `b` for zero?",
+        opcoes: ["A) TypeError", "B) AssertionError", "C) ZeroDivisionError", "D) SyntaxError"],
+        correta: 2
+      },
+      {
+        enunciado: "7. O que é `setUp()` no `unittest`?",
+        opcoes: ["A) Um método para rodar após cada teste", "B) Um método para executar uma vez ao final dos testes", "C) Um método opcional que roda antes de cada teste", "D) Um método que imprime os resultados"],
+        correta: 2
+      },
+      {
+        enunciado: "8. Complete o código abaixo com a verificação correta:\n\nself.________(resultado, 10)",
+        opcoes: ["A) assertEqual", "B) assert_equals", "C) compare", "D) is_equal"],
+        correta: 0
+      },
+      {
+        enunciado: "9. Qual comando usamos para executar um arquivo de testes com `unittest`?",
+        opcoes: ["A) python arquivo.py", "B) pytest arquivo.py", "C) python -m unittest arquivo.py", "D) unittest.run arquivo.py"],
+        correta: 2
+      },
+      {
+        enunciado: "10. O que esse teste verifica?\n\ndef somar(a, b):\n    return a + b\n\nclass Teste(unittest.TestCase):\n    def test_soma_negativos(self):\n        self.assertEqual(somar(-2, -3), -5)",
+        opcoes: ["A) Soma de números positivos", "B) Soma de negativos corretamente", "C) Soma de 0", "D) Soma com erro proposital"],
+        correta: 1
+      }
+    ];
+
+    const quiz = document.getElementById("quiz");
+
+    perguntas.forEach((pergunta, index) => {
+      const container = document.createElement("div");
+      container.className = "quiz-container";
+
+      const enunciado = document.createElement("div");
+      enunciado.className = "question";
+      enunciado.textContent = pergunta.enunciado;
+
+      const opcoes = document.createElement("div");
+      opcoes.className = "options";
+
+      pergunta.opcoes.forEach((texto, i) => {
+        const id = `q${index}_opt${i}`;
+        opcoes.innerHTML += `
+          <div>
+            <input type="radio" name="q${index}" id="${id}" value="${i}">
+            <label for="${id}">${texto}</label>
+          </div>
+        `;
+      });
+
+      const feedback = document.createElement("div");
+      feedback.id = `feedback${index}`;
+      feedback.className = "feedback";
+
+      const botao = document.createElement("button");
+      botao.textContent = "Verificar";
+      botao.onclick = () => {
+        const selecionado = document.querySelector(`input[name="q${index}"]:checked`);
+        if (selecionado) {
+          const correta = parseInt(selecionado.value) === pergunta.correta;
+          feedback.textContent = correta ? "✅ Correto!" : "❌ Incorreto.";
+          feedback.className = "feedback " + (correta ? "correct" : "incorrect");
+        } else {
+          feedback.textContent = "⛔ Escolha uma opção.";
+          feedback.className = "feedback incorrect";
+        }
+      };
+
+      container.appendChild(enunciado);
+      container.appendChild(opcoes);
+      container.appendChild(botao);
+      container.appendChild(feedback);
+
+      quiz.appendChild(container);
+    });
+  </script>
+
+</body>
+</html>
